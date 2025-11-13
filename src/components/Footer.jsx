@@ -63,12 +63,12 @@ const footerLinks = [
 
 const Footer = () => {
   return (
-    <footer className="relative overflow-hidden bg-gradient-to-b from-emerald-50 to-emerald-100/30">
+    <footer className="relative overflow-hidden bg-gradient-to-b from-[#DBBDE3]/20 to-[#DBBDE3]/10">
       {/* Decorative Elements */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -left-4 -bottom-4 w-24 h-24 rounded-full bg-emerald-500/10" />
-        <div className="absolute right-10 bottom-10 w-32 h-32 rounded-full bg-teal-500/10" />
-        <div className="absolute left-1/3 -bottom-6 w-16 h-16 rounded-full bg-emerald-400/10" />
+        <div className="absolute -left-4 -bottom-4 w-24 h-24 rounded-full bg-[#8051B8]/10" />
+        <div className="absolute right-10 bottom-10 w-32 h-32 rounded-full bg-[#DBBDE3]/10" />
+        <div className="absolute left-1/3 -bottom-6 w-16 h-16 rounded-full bg-[#8051B8]/10" />
       </div>
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -82,13 +82,13 @@ const Footer = () => {
               transition={{ duration: 0.5 }}
               className="flex items-center gap-2"
             >
-              <div className="p-2 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-lg">
+              <div className="p-2 bg-gradient-to-br from-[#8051B8] to-[#DBBDE3] rounded-lg">
                 <svg className="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                 </svg>
               </div>
-              <span className="text-2xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
-               somistream
+              <span className="text-2xl font-bold bg-gradient-to-r from-[#8051B8] to-[#CDA3E0] bg-clip-text text-transparent">
+               Stream Pulse
               </span>
             </motion.div>
             <motion.p 
@@ -111,7 +111,7 @@ const Footer = () => {
                   href={social.href}
                   whileHover={{ scale: 1.1, y: -2 }}
                   whileTap={{ scale: 0.95 }}
-                  className="p-2 rounded-full bg-gradient-to-br from-emerald-50 to-teal-50 text-emerald-600 hover:text-emerald-700 transition-colors"
+                  className="p-2 rounded-full bg-gradient-to-br from-[#DBBDE3]/30 to-[#DBBDE3]/20 text-[#8051B8] hover:text-[#6a4399] transition-colors"
                 >
                   {social.icon}
                 </motion.a>
@@ -134,7 +134,7 @@ const Footer = () => {
                   <li key={link.name}>
                     <motion.a
                       href={link.href}
-                      className="text-gray-600 hover:text-emerald-600 transition-colors inline-flex items-center group"
+                      className="text-gray-600 hover:text-[#8051B8] transition-colors inline-flex items-center group"
                       whileHover={{ x: 4 }}
                     >
                       <span>{link.name}</span>
@@ -166,12 +166,12 @@ const Footer = () => {
               <input
                 type="email"
                 placeholder="Enter your email"
-                className="flex-1 px-4 py-2 rounded-lg border border-emerald-200 focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-white/50"
+                className="flex-1 px-4 py-2 rounded-lg border border-[#DBBDE3] focus:outline-none focus:ring-2 focus:ring-[#8051B8] bg-white/50"
               />
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className="px-6 py-2 bg-gradient-to-r from-emerald-600 to-teal-600 text-white rounded-lg hover:from-emerald-700 hover:to-teal-700 transition-all shadow-md hover:shadow-lg"
+                className="px-6 py-2 bg-gradient-to-r from-[#8051B8] to-[#DBBDE3] text-white rounded-lg hover:from-[#6a4399] hover:to-[#c5a5d1] transition-all shadow-md hover:shadow-lg"
               >
                 Subscribe
               </motion.button>
@@ -184,18 +184,18 @@ const Footer = () => {
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           transition={{ delay: 0.8 }}
-          className="border-t border-emerald-100 py-8 mt-12"
+          className="border-t border-[#DBBDE3]/50 py-8 mt-12"
         >
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-gray-600 text-sm">
-              © 2024somistream. All rights reserved.
+              © 2024 Stream Pulse. All rights reserved.
             </p>
             <div className="flex flex-wrap justify-center gap-6">
               {['Privacy Policy', 'Terms of Service', 'Cookie Policy', 'Contact'].map((item) => (
                 <motion.a
                   key={item}
                   href="#"
-                  className="text-gray-600 hover:text-emerald-600 text-sm transition-colors"
+                  className="text-gray-600 hover:text-[#8051B8] text-sm transition-colors"
                   whileHover={{ y: -1 }}
                 >
                   {item}

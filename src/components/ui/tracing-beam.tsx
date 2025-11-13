@@ -58,7 +58,7 @@ export const TracingBeam = ({
                   ? "none"
                   : "rgba(0, 0, 0, 0.24) 0px 3px 8px",
             }}
-            className="ml-[27px] h-4 w-4 rounded-full border border-emerald-500 bg-white"
+            className="ml-[27px] h-4 w-4 rounded-full border border-[#8051B8] bg-white"
           />
           <svg
             viewBox={`0 0 20 ${svgHeight}`}

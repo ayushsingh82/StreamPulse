@@ -28,7 +28,7 @@ const Navbar = ({ onGetStarted }) => {
             <div className="flex items-center">
               <a
                 href="/"
-                className="text-2xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent"
+                className="text-2xl font-bold bg-gradient-to-r from-[#8051B8] to-[#CDA3E0] bg-clip-text text-transparent"
               >
                 Stream Pulse
               </a>
@@ -40,7 +40,7 @@ const Navbar = ({ onGetStarted }) => {
                 <motion.a
                   key={item}
                   href={`#${item.toLowerCase()}`}
-                  className="text-gray-800 hover:text-emerald-600 transition-colors"
+                  className="text-gray-800 hover:text-[#8051B8] transition-colors"
                   whileHover={{ y: -2 }}
                   whileTap={{ y: 0 }}
                 >
@@ -51,7 +51,7 @@ const Navbar = ({ onGetStarted }) => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={onGetStarted}
-                className="px-4 py-2 bg-gradient-to-r from-emerald-600 to-teal-600 text-white rounded-lg hover:from-emerald-700 hover:to-teal-700 transition-all"
+                className="px-4 py-2 bg-gradient-to-r from-[#8051B8] to-[#DBBDE3] text-white rounded-lg hover:from-[#6a4399] hover:to-[#c5a5d1] transition-all"
               >
                 <a href='/sidebar'>Get Started</a>
               </motion.button>
@@ -61,7 +61,7 @@ const Navbar = ({ onGetStarted }) => {
             <div className="md:hidden flex items-center">
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="text-gray-800 hover:text-emerald-600"
+                className="text-gray-800 hover:text-[#8051B8]"
               >
                 <svg
                   className="h-6 w-6"
@@ -104,14 +104,14 @@ const Navbar = ({ onGetStarted }) => {
                   <a
                     key={item}
                     href={`#${item.toLowerCase()}`}
-                    className="block px-3 py-2 text-gray-800 hover:text-emerald-600 hover:bg-emerald-50 rounded-md"
+                    className="block px-3 py-2 text-gray-800 hover:text-[#8051B8] hover:bg-[#DBBDE3]/30 rounded-md"
                   >
                     {item}
                   </a>
                 ))}
                 <button 
                   onClick={onGetStarted}
-                  className="w-full px-3 py-2 bg-gradient-to-r from-emerald-600 to-teal-600 text-white rounded-lg hover:from-emerald-700 hover:to-teal-700 transition-all"
+                  className="w-full px-3 py-2 bg-gradient-to-r from-[#8051B8] to-[#DBBDE3] text-white rounded-lg hover:from-[#6a4399] hover:to-[#c5a5d1] transition-all"
                 >
                   Get Started
                 </button>
