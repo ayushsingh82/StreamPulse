@@ -47,7 +47,12 @@ export function getEventSchemaEncoder() {
 export async function getEventSchemaId(): Promise<Hex | null> {
   try {
     const sdk = getSDK()
-    return await sdk.streams.computeSchemaId(eventSchema)
+    const result = await sdk.streams.computeSchemaId(eventSchema)
+    if (result instanceof Error) {
+      console.error('Error computing schema ID:', result)
+      return null
+    }
+    return result as Hex
   } catch (error) {
     console.error('Error computing schema ID:', error)
     return null

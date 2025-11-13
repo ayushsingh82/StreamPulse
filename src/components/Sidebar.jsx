@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from 'react';
 import { motion } from "framer-motion";
+import { Link, useLocation } from 'react-router-dom';
 import { useAccount, useDisconnect } from 'wagmi';
 import { useConnectModal } from '@rainbow-me/rainbowkit';
 
@@ -9,6 +10,15 @@ const Sidebar = () => {
   const { disconnect } = useDisconnect();
   const { openConnectModal } = useConnectModal();
   const menuItems = [
+    {
+      name: 'Dashboard',
+      path: '/dashboard',
+      icon: (
+        <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+        </svg>
+      )
+    },
     {
       name: 'NFT',
       path: '#',
@@ -73,7 +83,7 @@ const Sidebar = () => {
               href={item.path}
               whileHover={{ x: 4 }}
               className={`flex items-center gap-3 p-3 rounded-lg transition-colors
-                text-gray-800 hover:bg-[#DBBDE3]/30 hover:text-[#8051B8]`}
+                text-gray-800 hover:bg-[#DBBDE3]/30 hover:text-[#8051B8] ${window.location.pathname === item.path ? 'bg-[#DBBDE3]/30 text-[#8051B8]' : ''}`}
             >
               <div className="text-gray-800">
                 {item.icon}

@@ -108,35 +108,50 @@ export async function getAllEvents(publisher: Address): Promise<PublishedEvent[]
     const encoder = getEventSchemaEncoder()
     const events: PublishedEvent[] = []
     
-    // Note: The SDK should decode automatically for registered schemas
-    // But we'll handle both cases
+    // The SDK automatically decodes data for registered schemas
+    // Data structure: Array of arrays, where each inner array contains decoded fields
     for (const item of data) {
       try {
-        // If it's already decoded, use it directly
-        if (Array.isArray(item) && item.length > 0) {
-          const decoded = item as any[]
+        // Handle decoded data structure from SDK
+        if (Array.isArray(item) && item.length >= 4) {
+          // Extract values from decoded structure
+          const getValue = (field: any) => {
+            if (typeof field === 'object' && field !== null) {
+              return field.value?.value ?? field.value ?? field
+            }
+            return field
+          }
+          
+          const timestamp = BigInt(getValue(item[0]) || 0)
+          const eventPublisher = getValue(item[1]) || publisher
+          const eventType = String(getValue(item[2]) || '')
+          const eventDataStr = String(getValue(item[3]) || '')
+          
           events.push({
-            id: decoded[0]?.value || '0x0',
+            id: generateEventId(eventPublisher, timestamp),
             schemaId,
-            timestamp: BigInt(decoded[0]?.value || 0),
-            publisher: decoded[1]?.value || publisher,
-            eventType: decoded[2]?.value || '',
-            eventData: decoded[3]?.value || '',
+            timestamp,
+            publisher: eventPublisher as Address,
+            eventType,
+            eventData: eventDataStr,
           })
-        } else {
-          // If raw hex, decode it
+        } else if (typeof item === 'string' && item.startsWith('0x')) {
+          // If we get raw hex, decode it manually
           const decoded = encoder.decode(item as Hex)
-          events.push({
-            id: generateEventId(publisher, decoded[0]?.value || BigInt(0)),
-            schemaId,
-            timestamp: decoded[0]?.value || BigInt(0),
-            publisher: decoded[1]?.value || publisher,
-            eventType: decoded[2]?.value || '',
-            eventData: decoded[3]?.value || '',
-          })
+          if (decoded && decoded.length >= 4) {
+            const timestamp = BigInt(decoded[0]?.value || 0)
+            events.push({
+              id: generateEventId(publisher, timestamp),
+              schemaId,
+              timestamp,
+              publisher: decoded[1]?.value || publisher,
+              eventType: String(decoded[2]?.value || ''),
+              eventData: String(decoded[3]?.value || ''),
+            })
+          }
         }
       } catch (err) {
-        console.error('Error decoding event:', err)
+        console.error('Error decoding event:', err, item)
       }
     }
     
@@ -167,18 +182,33 @@ export async function getLatestEvent(publisher: Address): Promise<PublishedEvent
     const encoder = getEventSchemaEncoder()
     const item = data[0]
     
-    // Decode the data
-    const decoded = Array.isArray(item) && typeof item[0] === 'object'
-      ? item
-      : encoder.decode(item as Hex)
+    // Handle decoded data structure
+    const getValue = (field: any) => {
+      if (typeof field === 'object' && field !== null) {
+        return field.value?.value ?? field.value ?? field
+      }
+      return field
+    }
+    
+    let decoded
+    if (Array.isArray(item) && item.length >= 4) {
+      decoded = item
+    } else if (typeof item === 'string' && item.startsWith('0x')) {
+      decoded = encoder.decode(item as Hex)
+    } else {
+      return null
+    }
+    
+    const timestamp = BigInt(getValue(decoded[0]) || 0)
+    const eventPublisher = getValue(decoded[1]) || publisher
     
     return {
-      id: generateEventId(publisher, decoded[0]?.value || BigInt(0)),
+      id: generateEventId(eventPublisher, timestamp),
       schemaId,
-      timestamp: decoded[0]?.value || BigInt(0),
-      publisher: decoded[1]?.value || publisher,
-      eventType: decoded[2]?.value || '',
-      eventData: decoded[3]?.value || '',
+      timestamp,
+      publisher: eventPublisher as Address,
+      eventType: String(getValue(decoded[2]) || ''),
+      eventData: String(getValue(decoded[3]) || ''),
     }
   } catch (error) {
     console.error('Error reading latest event:', error)

@@ -128,7 +128,7 @@ const Home = () => {
                 transition={{ delay: 0.8, duration: 0.8 }}
               >
                 <motion.a
-                  href="#"
+                  href="/dashboard"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   className="px-8 py-4 bg-gradient-to-r from-[#8051B8] to-[#DBBDE3] text-white rounded-lg font-semibold hover:from-[#6a4399] hover:to-[#c5a5d1] transition-all shadow-lg hover:shadow-xl"
