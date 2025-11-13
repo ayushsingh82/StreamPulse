@@ -7,23 +7,11 @@ import Footer from './Footer';
 const Home = () => {
   const words = [
     {
-      text: "Welcome",
+      text: "Stream",
       className: "text-2xl md:text-4xl text-emerald-700 dark:text-emerald-500"
     },
     {
-      text: "to",
-      className: "text-2xl md:text-4xl text-emerald-700 dark:text-emerald-500"
-    },
-    {
-      text: "Somnia",
-      className: "text-2xl md:text-4xl text-emerald-700 dark:text-emerald-500"
-    },
-    {
-      text: "Data",
-      className: "text-2xl md:text-4xl text-emerald-700 dark:text-emerald-500"
-    },
-    {
-      text: "Streams",
+      text: "Pulse",
       className: "text-2xl md:text-4xl text-teal-700 dark:text-teal-500 font-bold"
     }
   ];

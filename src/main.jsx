@@ -9,7 +9,7 @@ import '@rainbow-me/rainbowkit/styles.css';
 import { somniaTestnet } from './components/config';
 
 const config = getDefaultConfig({
-  appName: 'somistream',
+  appName: 'Stream Pulse',
   projectId: 'e7fa7d19fd057ecd9403a0e89bd62b8b',
   chains: [somniaTestnet],
   ssr: false
