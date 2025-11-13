@@ -1,4 +1,5 @@
-import { type Address, type Hex, keccak256, toHex } from 'viem'
+import { type Address, type Hex } from 'viem'
+import { SDK, zeroBytes32 } from '@somnia-chain/streams'
 import { getSDK, getEventSchemaEncoder, getEventSchemaId, generateEventId } from './sdsClient'
 import { eventSchema } from './schema'
 
@@ -39,7 +40,7 @@ export async function publishEvent(
         {
           id: 'event',
           schema: eventSchema,
-          parentSchemaId: '0x0000000000000000000000000000000000000000000000000000000000000000' as Hex,
+          parentSchemaId: zeroBytes32,
         }
       ], true) // Ignore if already registered
       

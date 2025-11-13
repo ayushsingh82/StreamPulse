@@ -1,5 +1,5 @@
 import { SDK, SchemaEncoder } from '@somnia-chain/streams'
-import { createPublicClient, createWalletClient, http, custom, type Address, type Hex } from 'viem'
+import { createPublicClient, createWalletClient, http, custom, keccak256, toHex, type Address, type Hex } from 'viem'
 import { somniaTestnet } from '../components/config'
 import { eventSchema } from './schema'
 
@@ -15,11 +15,11 @@ export function getPublicClient() {
 
 // Get wallet client for writing data (requires MetaMask)
 export function getWalletClient() {
-  if (typeof window === 'undefined' || !window.ethereum) return null
+  if (typeof window === 'undefined' || !(window as any).ethereum) return null
   
   return createWalletClient({
     chain: somniaTestnet,
-    transport: custom(window.ethereum),
+    transport: custom((window as any).ethereum),
   })
 }
 
@@ -56,7 +56,6 @@ export async function getEventSchemaId(): Promise<Hex | null> {
 
 // Generate unique data ID
 export function generateEventId(publisher: Address, timestamp: bigint): Hex {
-  const { keccak256, toHex } = require('viem')
   return keccak256(toHex(`${publisher}-${timestamp}`, { size: 32 }))
 }
 

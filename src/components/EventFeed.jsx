@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAccount } from 'wagmi';
-import { getAllEvents, getLatestEvent } from '../lib/eventService';
+import { getAllEvents } from '../lib/eventService';
 import { subscribeToEvents } from '../lib/subscriptionService';
-import type { PublishedEvent } from '../lib/eventService';
 
 const EventFeed = () => {
   const { address } = useAccount();
-  const [events, setEvents] = useState<PublishedEvent[]>([]);
+  const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
@@ -57,12 +56,12 @@ const EventFeed = () => {
     }
   };
 
-  const formatTimestamp = (timestamp: bigint) => {
+  const formatTimestamp = (timestamp) => {
     const date = new Date(Number(timestamp));
     return date.toLocaleString();
   };
 
-  const formatAddress = (addr: string) => {
+  const formatAddress = (addr) => {
     return `${addr.slice(0, 6)}...${addr.slice(-4)}`;
   };
 
