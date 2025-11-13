@@ -1,16 +1,45 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import PublishEvent from './PublishEvent';
 import EventFeed from './EventFeed';
 import { useAccount } from 'wagmi';
+import { getAllEvents } from '../lib/eventService';
 
 const Dashboard = () => {
   const { address } = useAccount();
+  const [totalEvents, setTotalEvents] = useState(0);
+  const [refreshKey, setRefreshKey] = useState(0);
 
   const handleEventPublished = (event) => {
-    // Event published, can trigger refresh or notification
+    // Event published, refresh event count and feed
     console.log('Event published:', event);
+    if (address) {
+      loadEventCount();
+      // Trigger EventFeed refresh
+      setRefreshKey(prev => prev + 1);
+    }
   };
+
+  const loadEventCount = async () => {
+    if (!address) {
+      setTotalEvents(0);
+      return;
+    }
+    
+    try {
+      const events = await getAllEvents(address);
+      setTotalEvents(events.length);
+    } catch (error) {
+      console.error('Error loading event count:', error);
+    }
+  };
+
+  useEffect(() => {
+    loadEventCount();
+    // Refresh count every 5 seconds
+    const interval = setInterval(loadEventCount, 5000);
+    return () => clearInterval(interval);
+  }, [address]);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#DBBDE3]/10 via-white to-[#DBBDE3]/10 py-8">
@@ -44,7 +73,7 @@ const Dashboard = () => {
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.3 }}
           >
-            <EventFeed />
+            <EventFeed key={refreshKey} />
           </motion.div>
         </div>
 
@@ -56,7 +85,7 @@ const Dashboard = () => {
           className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4"
         >
           <div className="bg-white rounded-xl p-6 shadow-lg border border-[#DBBDE3]/50">
-            <div className="text-3xl font-bold text-[#8051B8] mb-2">0</div>
+            <div className="text-3xl font-bold text-[#8051B8] mb-2">{totalEvents}</div>
             <div className="text-gray-600">Total Events</div>
           </div>
           <div className="bg-white rounded-xl p-6 shadow-lg border border-[#DBBDE3]/50">

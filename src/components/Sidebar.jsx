@@ -9,6 +9,7 @@ const Sidebar = () => {
   const { address, isConnected } = useAccount();
   const { disconnect } = useDisconnect();
   const { openConnectModal } = useConnectModal();
+  const location = useLocation();
   const menuItems = [
     {
       name: 'Dashboard',
@@ -78,23 +79,26 @@ const Sidebar = () => {
         
         <nav className="p-4 space-y-2">
           {menuItems.map((item) => (
-            <motion.a
+            <motion.div
               key={item.name}
-              href={item.path}
               whileHover={{ x: 4 }}
-              className={`flex items-center gap-3 p-3 rounded-lg transition-colors
-                text-gray-800 hover:bg-[#DBBDE3]/30 hover:text-[#8051B8] ${window.location.pathname === item.path ? 'bg-[#DBBDE3]/30 text-[#8051B8]' : ''}`}
             >
-              <div className="text-gray-800">
-                {item.icon}
-              </div>
-              <span>{item.name}</span>
-              {item.soon && (
-                <span className="ml-auto text-xs px-2 py-1 bg-gray-100 text-gray-800 rounded-full">
-                  Soon
-                </span>
-              )}
-            </motion.a>
+              <Link
+                to={item.path}
+                className={`flex items-center gap-3 p-3 rounded-lg transition-colors
+                  text-gray-800 hover:bg-[#DBBDE3]/30 hover:text-[#8051B8] ${location.pathname === item.path ? 'bg-[#DBBDE3]/30 text-[#8051B8]' : ''}`}
+              >
+                <div className="text-gray-800">
+                  {item.icon}
+                </div>
+                <span>{item.name}</span>
+                {item.soon && (
+                  <span className="ml-auto text-xs px-2 py-1 bg-gray-100 text-gray-800 rounded-full">
+                    Soon
+                  </span>
+                )}
+              </Link>
+            </motion.div>
           ))}
         </nav>
       </div>
