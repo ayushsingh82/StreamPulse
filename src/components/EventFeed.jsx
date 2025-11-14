@@ -3,56 +3,67 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useAccount } from 'wagmi';
 import { getAllEvents } from '../lib/eventService';
 import { subscribeToEvents } from '../lib/subscriptionService';
+import { isAddress } from 'viem';
 
 const EventFeed = () => {
-  const { address } = useAccount();
+  const { address: connectedAddress } = useAccount();
+  const [walletAddress, setWalletAddress] = useState('');
+  const [chain, setChain] = useState('testnet'); // 'testnet' or 'mainnet'
   const [events, setEvents] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  // Load events on mount and when address changes
+  // Auto-fill connected wallet address
   useEffect(() => {
-    if (address) {
+    if (connectedAddress && !walletAddress) {
+      setWalletAddress(connectedAddress);
+    }
+  }, [connectedAddress]);
+
+  // Load events when wallet address or chain changes
+  useEffect(() => {
+    if (walletAddress && isAddress(walletAddress)) {
       loadEvents();
-      setupSubscription();
     } else {
       setEvents([]);
-      setLoading(false);
     }
-  }, [address]);
+  }, [walletAddress, chain]);
 
   const loadEvents = async () => {
-    if (!address) return;
+    if (!walletAddress || !isAddress(walletAddress)) {
+      setEvents([]);
+      return;
+    }
     
     setLoading(true);
     setError('');
     
     try {
-      const allEvents = await getAllEvents(address);
+      console.log('Loading events for:', walletAddress, 'on', chain);
+      const allEvents = await getAllEvents(walletAddress, chain);
+      console.log('Loaded events:', allEvents);
       setEvents(allEvents);
+      
+      if (allEvents.length === 0) {
+        setError('No events found for this wallet address. Make sure the address has published events on ' + chain + '.');
+      }
     } catch (err) {
       console.error('Error loading events:', err);
-      setError('Failed to load events');
+      setError(`Failed to load events: ${err.message || 'Unknown error'}`);
     } finally {
       setLoading(false);
     }
   };
 
-  const setupSubscription = async () => {
-    if (!address) return;
+  const handleAddressChange = (e) => {
+    const value = e.target.value;
+    setWalletAddress(value);
+    setError('');
+  };
 
-    try {
-      await subscribeToEvents({
-        onData: async (newEvent) => {
-          // Reload events when new one is published
-          await loadEvents();
-        },
-        onError: (err) => {
-          console.error('Subscription error:', err);
-        },
-      });
-    } catch (err) {
-      console.error('Error setting up subscription:', err);
+  const handleUseConnected = () => {
+    if (connectedAddress) {
+      setWalletAddress(connectedAddress);
     }
   };
 
@@ -62,16 +73,16 @@ const EventFeed = () => {
   };
 
   const formatAddress = (addr) => {
+    if (!addr) return '';
     return `${addr.slice(0, 6)}...${addr.slice(-4)}`;
   };
 
-  if (!address) {
-    return (
-      <div className="bg-white rounded-2xl p-6 shadow-lg border border-[#DBBDE3]/50">
-        <p className="text-gray-600 text-center">Connect your wallet to view events</p>
-      </div>
-    );
-  }
+  const getExplorerUrl = (txHash) => {
+    if (chain === 'mainnet') {
+      return `https://explorer.somnia.network/tx/${txHash}`;
+    }
+    return `https://shannon-explorer.somnia.network/tx/${txHash}`;
+  };
 
   return (
     <motion.div
