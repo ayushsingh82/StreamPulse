@@ -60,15 +60,15 @@ const Sidebar = () => {
     <motion.aside 
       initial={{ x: -100, opacity: 0 }}
       animate={{ x: 0, opacity: 1 }}
-      className="w-64 bg-white shadow-lg fixed h-screen flex flex-col mt-16"
+      className="w-64 bg-gray-900 shadow-lg fixed h-screen flex flex-col mt-16 border-r border-[#8051B8]/30"
     >
       <div className="flex-1">
-        <div className="p-6 border-b">
+        <div className="p-6 border-b border-[#8051B8]/30">
           <a href="/" className="flex items-center gap-2">
             <svg className="w-8 h-8 text-[#8051B8]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
             </svg>
-            <span className="text-xl font-bold bg-[#DBBDE3]/30 px-2 py-1 rounded-lg text-[#8051B8]">
+            <span className="text-xl font-bold bg-[#8051B8]/20 px-2 py-1 rounded-lg text-[#8051B8]">
               Stream Pulse
             </span>
           </a>
@@ -86,14 +86,14 @@ const Sidebar = () => {
               <Link
                 to={item.path}
                 className={`flex items-center gap-3 p-3 rounded-lg transition-colors
-                  text-gray-800 hover:bg-[#DBBDE3]/30 hover:text-[#8051B8] ${location.pathname === item.path ? 'bg-[#DBBDE3]/30 text-[#8051B8]' : ''}`}
+                  text-gray-300 hover:bg-gray-800 hover:text-[#8051B8] ${location.pathname === item.path ? 'bg-gray-800 text-[#8051B8]' : ''}`}
               >
-                <div className="text-gray-800">
+                <div className="text-gray-300">
                   {item.icon}
                 </div>
                 <span>{item.name}</span>
                 {item.soon && (
-                  <span className="ml-auto text-xs px-2 py-1 bg-gray-100 text-gray-800 rounded-full">
+                  <span className="ml-auto text-xs px-2 py-1 bg-gray-800 text-gray-300 rounded-full">
                     Soon
                   </span>
                 )}
@@ -103,9 +103,9 @@ const Sidebar = () => {
         </nav>
       </div>
 
-      <div className="p-4 border-t border-gray-100 mb-12">
-        <div className="mb-3 text-sm text-gray-600 flex items-center gap-2">
-          <span className={`inline-block w-2 h-2 rounded-full ${isConnected ? 'bg-[#8051B8]' : 'bg-gray-400'}`}></span>
+      <div className="p-4 border-t border-[#8051B8]/30 mb-12">
+        <div className="mb-3 text-sm text-gray-400 flex items-center gap-2">
+          <span className={`inline-block w-2 h-2 rounded-full ${isConnected ? 'bg-[#8051B8]' : 'bg-gray-600'}`}></span>
           <span>{isConnected ? 'Connected to Somnia Testnet' : 'Not Connected'}</span>
         </div>
         
@@ -133,13 +133,13 @@ const Sidebar = () => {
           </motion.button>
         ) : (
           <div className="space-y-2">
-            <div className="p-3 bg-[#DBBDE3]/30 rounded-lg flex items-center justify-between">
+            <div className="p-3 bg-gray-800 rounded-lg flex items-center justify-between">
               <span className="text-sm text-[#8051B8] font-medium truncate">
                 {address?.slice(0, 6)}...{address?.slice(-4)}
               </span>
               <button
                 onClick={copyAddress}
-                className="p-1.5 hover:bg-[#DBBDE3]/50 rounded-lg transition-colors"
+                className="p-1.5 hover:bg-gray-700 rounded-lg transition-colors"
                 title="Copy address"
               >
                 <svg 
@@ -161,7 +161,7 @@ const Sidebar = () => {
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => disconnect()}
-              className="w-full px-4 py-2 flex items-center justify-center gap-2 border-2 border-red-500 text-red-500 rounded-lg hover:bg-red-50 transition-all font-medium"
+              className="w-full px-4 py-2 flex items-center justify-center gap-2 border-2 border-red-500 text-red-500 rounded-lg hover:bg-red-900/30 transition-all font-medium"
             >
               <svg 
                 className="w-4 h-4" 

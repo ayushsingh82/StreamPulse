@@ -90,16 +90,19 @@ export async function publishEvent(
 }
 
 // Read all events from a publisher
-export async function getAllEvents(publisher: Address): Promise<PublishedEvent[]> {
+export async function getAllEvents(publisher: Address, chain: 'testnet' | 'mainnet' = 'testnet'): Promise<PublishedEvent[]> {
   try {
-    const sdk = getSDK()
-    const schemaId = await getEventSchemaId()
+    const sdk = getSDK(chain)
+    const schemaId = await getEventSchemaId(chain)
     
     if (!schemaId) {
+      console.warn('Schema ID not available for chain:', chain)
       return []
     }
     
+    console.log('Fetching events for publisher:', publisher, 'on chain:', chain, 'with schema:', schemaId)
     const data = await sdk.streams.getAllPublisherDataForSchema(schemaId, publisher)
+    console.log('Raw data from SDK:', data)
     
     if (!data || !Array.isArray(data)) {
       return []
@@ -164,10 +167,10 @@ export async function getAllEvents(publisher: Address): Promise<PublishedEvent[]
 }
 
 // Get latest event from a publisher
-export async function getLatestEvent(publisher: Address): Promise<PublishedEvent | null> {
+export async function getLatestEvent(publisher: Address, chain: 'testnet' | 'mainnet' = 'testnet'): Promise<PublishedEvent | null> {
   try {
-    const sdk = getSDK()
-    const schemaId = await getEventSchemaId()
+    const sdk = getSDK(chain)
+    const schemaId = await getEventSchemaId(chain)
     
     if (!schemaId) {
       return null

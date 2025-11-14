@@ -27,7 +27,8 @@ const Dashboard = () => {
     }
     
     try {
-      const events = await getAllEvents(address);
+      // Default to testnet for connected wallet stats
+      const events = await getAllEvents(address, 'testnet');
       setTotalEvents(events.length);
     } catch (error) {
       console.error('Error loading event count:', error);
@@ -42,7 +43,7 @@ const Dashboard = () => {
   }, [address]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#DBBDE3]/10 via-white to-[#DBBDE3]/10 py-8">
+    <div className="min-h-screen bg-gradient-to-b from-gray-900 via-black to-gray-900 py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -52,7 +53,7 @@ const Dashboard = () => {
           <h1 className="text-4xl font-bold mb-2 bg-gradient-to-r from-[#8051B8] to-[#CDA3E0] bg-clip-text text-transparent">
             Stream Pulse Dashboard
           </h1>
-          <p className="text-gray-600">
+          <p className="text-gray-400">
             Publish and monitor real-time on-chain events
           </p>
         </motion.div>
@@ -84,19 +85,19 @@ const Dashboard = () => {
           transition={{ delay: 0.4 }}
           className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4"
         >
-          <div className="bg-white rounded-xl p-6 shadow-lg border border-[#DBBDE3]/50">
+          <div className="bg-gray-900 rounded-xl p-6 shadow-lg border border-[#8051B8]/30">
             <div className="text-3xl font-bold text-[#8051B8] mb-2">{totalEvents}</div>
-            <div className="text-gray-600">Total Events</div>
+            <div className="text-gray-400">Total Events</div>
           </div>
-          <div className="bg-white rounded-xl p-6 shadow-lg border border-[#DBBDE3]/50">
+          <div className="bg-gray-900 rounded-xl p-6 shadow-lg border border-[#8051B8]/30">
             <div className="text-3xl font-bold text-[#8051B8] mb-2">
               {address ? '1' : '0'}
             </div>
-            <div className="text-gray-600">Connected Wallets</div>
+            <div className="text-gray-400">Connected Wallets</div>
           </div>
-          <div className="bg-white rounded-xl p-6 shadow-lg border border-[#DBBDE3]/50">
+          <div className="bg-gray-900 rounded-xl p-6 shadow-lg border border-[#8051B8]/30">
             <div className="text-3xl font-bold text-[#8051B8] mb-2">Live</div>
-            <div className="text-gray-600">Status</div>
+            <div className="text-gray-400">Status</div>
           </div>
         </motion.div>
       </div>

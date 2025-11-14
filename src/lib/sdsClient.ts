@@ -1,32 +1,39 @@
 import { SDK, SchemaEncoder } from '@somnia-chain/streams'
 import { createPublicClient, createWalletClient, http, custom, keccak256, toHex, type Address, type Hex } from 'viem'
-import { somniaTestnet } from '../components/config'
+import { somniaTestnet, somniaMainnet } from '../components/config'
 import { eventSchema } from './schema'
 
 // Get public client for reading data
-export function getPublicClient() {
+export function getPublicClient(chain: 'testnet' | 'mainnet' = 'testnet') {
   if (typeof window === 'undefined') return null
   
+  const selectedChain = chain === 'mainnet' ? somniaMainnet : somniaTestnet
+  const rpcUrl = chain === 'mainnet' 
+    ? 'https://rpc.somnia.network'
+    : 'https://dream-rpc.somnia.network'
+  
   return createPublicClient({
-    chain: somniaTestnet,
-    transport: http('https://dream-rpc.somnia.network'),
+    chain: selectedChain,
+    transport: http(rpcUrl),
   })
 }
 
 // Get wallet client for writing data (requires MetaMask)
-export function getWalletClient() {
+export function getWalletClient(chain: 'testnet' | 'mainnet' = 'testnet') {
   if (typeof window === 'undefined' || !(window as any).ethereum) return null
   
+  const selectedChain = chain === 'mainnet' ? somniaMainnet : somniaTestnet
+  
   return createWalletClient({
-    chain: somniaTestnet,
+    chain: selectedChain,
     transport: custom((window as any).ethereum),
   })
 }
 
 // Initialize SDK instance
-export function getSDK() {
-  const publicClient = getPublicClient()
-  const walletClient = getWalletClient()
+export function getSDK(chain: 'testnet' | 'mainnet' = 'testnet') {
+  const publicClient = getPublicClient(chain)
+  const walletClient = getWalletClient(chain)
   
   if (!publicClient) {
     throw new Error('Public client not available')
@@ -44,9 +51,9 @@ export function getEventSchemaEncoder() {
 }
 
 // Compute schema ID
-export async function getEventSchemaId(): Promise<Hex | null> {
+export async function getEventSchemaId(chain: 'testnet' | 'mainnet' = 'testnet'): Promise<Hex | null> {
   try {
-    const sdk = getSDK()
+    const sdk = getSDK(chain)
     const result = await sdk.streams.computeSchemaId(eventSchema)
     if (result instanceof Error) {
       console.error('Error computing schema ID:', result)

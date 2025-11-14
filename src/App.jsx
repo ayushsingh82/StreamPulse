@@ -7,9 +7,9 @@ import Sidebar from './components/Sidebar';
 function App() {
   return (
     <Router>
-      <div className="flex">
+      <div className="flex bg-black">
         <Sidebar />
-        <main className="flex-1 ml-64">
+        <main className="flex-1 ml-64 bg-black">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/dashboard" element={<Dashboard />} />

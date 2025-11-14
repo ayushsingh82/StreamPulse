@@ -56,27 +56,27 @@ const PublishEvent = ({ onEventPublished }) => {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-white rounded-2xl p-6 shadow-lg border border-[#DBBDE3]/50"
+      className="bg-gray-900 rounded-2xl p-6 shadow-lg border border-[#8051B8]/30"
     >
       <h2 className="text-2xl font-bold mb-4 bg-gradient-to-r from-[#8051B8] to-[#CDA3E0] bg-clip-text text-transparent">
         Publish Event
       </h2>
       
       {!address && (
-        <div className="mb-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
-          <p className="text-sm text-yellow-800">Please connect your wallet to publish events</p>
+        <div className="mb-4 p-3 bg-yellow-900/30 border border-yellow-500/50 rounded-lg">
+          <p className="text-sm text-yellow-300">Please connect your wallet to publish events</p>
         </div>
       )}
 
       <div className="space-y-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-medium text-gray-300 mb-2">
             Event Type
           </label>
           <select
             value={eventType}
             onChange={(e) => setEventType(e.target.value)}
-            className="w-full px-4 py-2 border border-[#DBBDE3] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#8051B8] bg-white"
+            className="w-full px-4 py-2 border border-[#8051B8]/30 bg-gray-800 text-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#8051B8]"
             disabled={isPublishing}
           >
             {EVENT_TYPES.map((type) => (
@@ -88,7 +88,7 @@ const PublishEvent = ({ onEventPublished }) => {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-medium text-gray-300 mb-2">
             Event Data (JSON string)
           </label>
           <textarea
@@ -96,23 +96,23 @@ const PublishEvent = ({ onEventPublished }) => {
             onChange={(e) => setEventData(e.target.value)}
             placeholder='{"message": "Hello World", "value": 100}'
             rows={4}
-            className="w-full px-4 py-2 border border-[#DBBDE3] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#8051B8] bg-white resize-none"
+            className="w-full px-4 py-2 border border-[#8051B8]/30 bg-gray-800 text-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#8051B8] resize-none placeholder-gray-500"
             disabled={isPublishing}
           />
-          <p className="mt-1 text-xs text-gray-500">
+          <p className="mt-1 text-xs text-gray-400">
             Enter event data as a JSON string
           </p>
         </div>
 
         {error && (
-          <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
-            <p className="text-sm text-red-800">{error}</p>
+          <div className="p-3 bg-red-900/30 border border-red-500/50 rounded-lg">
+            <p className="text-sm text-red-300">{error}</p>
           </div>
         )}
 
         {success && (
-          <div className="p-3 bg-green-50 border border-green-200 rounded-lg">
-            <p className="text-sm text-green-800">{success}</p>
+          <div className="p-3 bg-green-900/30 border border-green-500/50 rounded-lg">
+            <p className="text-sm text-green-300">{success}</p>
           </div>
         )}
 

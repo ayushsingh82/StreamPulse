@@ -99,7 +99,7 @@ const Home = () => {
         <div className="absolute inset-4 border-2 border-[#DBBDE3]/20 rounded-full" />
       </motion.div>
 
-      <div className="min-h-screen bg-gradient-to-b from-[#DBBDE3]/10 via-white to-[#DBBDE3]/10">
+      <div className="min-h-screen bg-gradient-to-b from-gray-900 via-black to-gray-900">
         {/* Hero Section */}
         <section className="pt-32 pb-20">
           <div className="max-w-7xl mx-auto">
@@ -117,7 +117,7 @@ const Home = () => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.5, duration: 0.8 }}
-                className="text-lg md:text-xl text-gray-700 mb-12 max-w-2xl mx-auto font-medium px-4"
+                className="text-lg md:text-xl text-gray-300 mb-12 max-w-2xl mx-auto font-medium px-4"
               >
  Explore SDS - a breakthrough SDK that turns on-chain data into live, structured, and reactive streams. Build apps that react instantly to on-chain events.
               </motion.p>
@@ -142,7 +142,7 @@ const Home = () => {
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="px-8 py-4 border-2 border-[#8051B8] text-[#8051B8] rounded-lg font-semibold hover:bg-[#DBBDE3]/30 transition-all shadow-md hover:shadow-lg"
+                  className="px-8 py-4 border-2 border-[#8051B8] text-[#8051B8] rounded-lg font-semibold hover:bg-gray-800 transition-all shadow-md hover:shadow-lg"
                 >
                   Learn More
                 </motion.button>
@@ -170,9 +170,9 @@ const Home = () => {
                             initial={{ opacity: 0, x: -20 }}
                             whileInView={{ opacity: 1, x: 0 }}
                             transition={{ delay: index * 0.2 }}
-                            className="flex items-center gap-3 text-gray-700"
+                            className="flex items-center gap-3 text-gray-300"
                           >
-                            <span className="w-6 h-6 rounded-full bg-[#DBBDE3]/50 flex items-center justify-center">
+                            <span className="w-6 h-6 rounded-full bg-white/40 flex items-center justify-center">
                               <svg className="w-4 h-4 text-[#8051B8]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                               </svg>
@@ -187,17 +187,17 @@ const Home = () => {
                       whileInView={{ opacity: 1, y: 0 }}
                       className="relative"
                     >
-                      <div className="bg-white rounded-2xl shadow-2xl p-6 transform rotate-2 hover:rotate-0 transition-transform duration-300">
+                      <div className="bg-gray-900 rounded-2xl shadow-2xl p-6 transform rotate-2 hover:rotate-0 transition-transform duration-300 border border-[#8051B8]/30">
                         <div className="flex justify-between items-center mb-6">
                           <div className="flex items-center gap-2">
-                            <div className="w-10 h-10 rounded-lg bg-[#DBBDE3]/50 flex items-center justify-center">
+                            <div className="w-10 h-10 rounded-lg bg-white/40 flex items-center justify-center">
                               <svg className="w-6 h-6 text-[#8051B8]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                               </svg>
                             </div>
                             <div>
                               <h3 className="font-semibold">Live Data Stream</h3>
-                              <p className="text-sm text-gray-500">Real-time updates</p>
+                              <p className="text-sm text-gray-400">Real-time updates</p>
                             </div>
                           </div>
                           <div className="text-right">
@@ -236,12 +236,12 @@ const Home = () => {
                       transition={{ delay: index * 0.2 }}
                       className="relative"
                     >
-                      <div className="bg-white rounded-2xl p-6 shadow-lg border border-[#DBBDE3]/50">
-                        <div className="w-12 h-12 bg-[#DBBDE3]/50 rounded-lg flex items-center justify-center mb-4">
+                      <div className="bg-gray-900 rounded-2xl p-6 shadow-lg border border-[#8051B8]/30">
+                        <div className="w-12 h-12 bg-white/40 rounded-lg flex items-center justify-center mb-4">
                           {step.icon}
                         </div>
-                        <h3 className="text-xl font-semibold mb-2">{step.title}</h3>
-                        <p className="text-gray-600">{step.description}</p>
+                        <h3 className="text-xl font-semibold mb-2 text-gray-200">{step.title}</h3>
+                        <p className="text-gray-400">{step.description}</p>
                       </div>
                       {index < processSteps.length - 1 && (
                         <div className="hidden md:block absolute top-1/2 right-0 transform translate-x-1/2 -translate-y-1/2">
@@ -270,20 +270,20 @@ const Home = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: index * 0.2 }}
                   viewport={{ once: true }}
-                  className="relative p-8 rounded-2xl bg-white/80 backdrop-blur-sm shadow-lg hover:shadow-xl transition-all border border-[#DBBDE3]/50"
+                  className="relative p-8 rounded-2xl bg-gray-900/80 backdrop-blur-sm shadow-lg hover:shadow-xl transition-all border border-[#8051B8]/30"
                 >
                   <div className="absolute -top-4 left-4">
                     <motion.div
                       initial={{ scale: 0 }}
                       whileInView={{ scale: 1 }}
                       transition={{ type: "spring", stiffness: 200, delay: index * 0.2 }}
-                      className="w-12 h-12 bg-gradient-to-br from-[#DBBDE3]/50 to-[#DBBDE3]/30 rounded-lg flex items-center justify-center shadow-md"
+                      className="w-12 h-12 bg-white/40 rounded-lg flex items-center justify-center shadow-md"
                     >
                       {feature.icon}
                     </motion.div>
                   </div>
-                  <h3 className="text-xl font-semibold mb-4 mt-6 text-gray-800">{feature.title}</h3>
-                  <p className="text-gray-700">{feature.description}</p>
+                  <h3 className="text-xl font-semibold mb-4 mt-6 text-gray-200">{feature.title}</h3>
+                  <p className="text-gray-300">{feature.description}</p>
                 </motion.div>
               ))}
             </motion.div>
@@ -303,7 +303,7 @@ const Home = () => {
                   whileInView={{ opacity: 1, scale: 1 }}
                   transition={{ duration: 0.5, delay: index * 0.2 }}
                   viewport={{ once: true }}
-                  className="text-center p-8 rounded-2xl bg-white/80 backdrop-blur-sm shadow-lg border border-[#DBBDE3]/50"
+                  className="text-center p-8 rounded-2xl bg-gray-900/80 backdrop-blur-sm shadow-lg border border-[#8051B8]/30"
                 >
                   <motion.div
                     initial={{ y: 20 }}
@@ -313,7 +313,7 @@ const Home = () => {
                   >
                     {stat.value}
                   </motion.div>
-                  <div className="text-gray-700 font-medium">{stat.label}</div>
+                  <div className="text-gray-300 font-medium">{stat.label}</div>
                 </motion.div>
               ))}
             </motion.div>

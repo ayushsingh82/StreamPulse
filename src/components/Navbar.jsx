@@ -20,7 +20,7 @@ const Navbar = ({ onGetStarted }) => {
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         className={`fixed w-full z-50 transition-all duration-300 ${
-          isScrolled ? 'bg-white/80 backdrop-blur-lg shadow-lg' : 'bg-transparent'
+          isScrolled ? 'bg-gray-900/80 backdrop-blur-lg shadow-lg border-b border-[#8051B8]/30' : 'bg-transparent'
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -40,7 +40,7 @@ const Navbar = ({ onGetStarted }) => {
                 <motion.a
                   key={item}
                   href={`#${item.toLowerCase()}`}
-                  className="text-gray-800 hover:text-[#8051B8] transition-colors"
+                  className="text-gray-300 hover:text-[#8051B8] transition-colors"
                   whileHover={{ y: -2 }}
                   whileTap={{ y: 0 }}
                 >
@@ -61,7 +61,7 @@ const Navbar = ({ onGetStarted }) => {
             <div className="md:hidden flex items-center">
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="text-gray-800 hover:text-[#8051B8]"
+                className="text-gray-300 hover:text-[#8051B8]"
               >
                 <svg
                   className="h-6 w-6"
@@ -97,14 +97,14 @@ const Navbar = ({ onGetStarted }) => {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
-              className="md:hidden bg-white border-t"
+              className="md:hidden bg-gray-900 border-t border-[#8051B8]/30"
             >
               <div className="px-2 pt-2 pb-3 space-y-1">
                 {['Features', 'Pricing', 'Resources', 'Contact'].map((item) => (
                   <a
                     key={item}
                     href={`#${item.toLowerCase()}`}
-                    className="block px-3 py-2 text-gray-800 hover:text-[#8051B8] hover:bg-[#DBBDE3]/30 rounded-md"
+                    className="block px-3 py-2 text-gray-300 hover:text-[#8051B8] hover:bg-gray-800 rounded-md"
                   >
                     {item}
                   </a>

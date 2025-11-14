@@ -63,7 +63,7 @@ const footerLinks = [
 
 const Footer = () => {
   return (
-    <footer className="relative overflow-hidden bg-gradient-to-b from-[#DBBDE3]/20 to-[#DBBDE3]/10">
+    <footer className="relative overflow-hidden bg-gradient-to-b from-gray-900 to-black">
       {/* Decorative Elements */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute -left-4 -bottom-4 w-24 h-24 rounded-full bg-[#8051B8]/10" />
@@ -95,7 +95,7 @@ const Footer = () => {
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               transition={{ delay: 0.2 }}
-              className="text-gray-600 max-w-sm"
+              className="text-gray-400 max-w-sm"
             >
               Revolutionizing invoicing with modern solutions. Join thousands of businesses streamlining their financial operations.
             </motion.p>
@@ -128,13 +128,13 @@ const Footer = () => {
               transition={{ delay: 0.2 * idx }}
               className="md:col-span-2"
             >
-              <h3 className="font-semibold text-gray-900 mb-4">{section.title}</h3>
+              <h3 className="font-semibold text-gray-200 mb-4">{section.title}</h3>
               <ul className="space-y-3">
                 {section.links.map((link) => (
                   <li key={link.name}>
                     <motion.a
                       href={link.href}
-                      className="text-gray-600 hover:text-[#8051B8] transition-colors inline-flex items-center group"
+                      className="text-gray-400 hover:text-[#8051B8] transition-colors inline-flex items-center group"
                       whileHover={{ x: 4 }}
                     >
                       <span>{link.name}</span>
@@ -160,13 +160,13 @@ const Footer = () => {
             transition={{ delay: 0.6 }}
             className="md:col-span-4"
           >
-            <h3 className="font-semibold text-gray-900 mb-4">Stay Updated</h3>
-            <p className="text-gray-600 mb-4">Get the latest updates and news about our platform</p>
+            <h3 className="font-semibold text-gray-200 mb-4">Stay Updated</h3>
+            <p className="text-gray-400 mb-4">Get the latest updates and news about our platform</p>
             <div className="flex gap-2">
               <input
                 type="email"
                 placeholder="Enter your email"
-                className="flex-1 px-4 py-2 rounded-lg border border-[#DBBDE3] focus:outline-none focus:ring-2 focus:ring-[#8051B8] bg-white/50"
+                className="flex-1 px-4 py-2 rounded-lg border border-[#8051B8]/30 focus:outline-none focus:ring-2 focus:ring-[#8051B8] bg-gray-800 text-gray-200 placeholder-gray-500"
               />
               <motion.button
                 whileHover={{ scale: 1.02 }}
@@ -184,10 +184,10 @@ const Footer = () => {
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           transition={{ delay: 0.8 }}
-          className="border-t border-[#DBBDE3]/50 py-8 mt-12"
+          className="border-t border-[#8051B8]/30 py-8 mt-12"
         >
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-gray-600 text-sm">
+            <p className="text-gray-400 text-sm">
               © 2024 Stream Pulse. All rights reserved.
             </p>
             <div className="flex flex-wrap justify-center gap-6">
@@ -195,7 +195,7 @@ const Footer = () => {
                 <motion.a
                   key={item}
                   href="#"
-                  className="text-gray-600 hover:text-[#8051B8] text-sm transition-colors"
+                  className="text-gray-400 hover:text-[#8051B8] text-sm transition-colors"
                   whileHover={{ y: -1 }}
                 >
                   {item}
