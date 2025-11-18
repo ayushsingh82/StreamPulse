@@ -27,8 +27,8 @@ const Dashboard = () => {
     }
     
     try {
-      // Default to testnet for connected wallet stats
-      const events = await getAllEvents(address, 'testnet');
+      // Get events from Somnia Testnet
+      const events = await getAllEvents(address);
       setTotalEvents(events.length);
     } catch (error) {
       console.error('Error loading event count:', error);

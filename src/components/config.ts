@@ -26,28 +26,5 @@ export const somniaTestnet = defineChain({
   testnet: true,
 })
 
-// Define Somnia Mainnet chain
-export const somniaMainnet = defineChain({
-  id: 1946,
-  name: 'Somnia Mainnet',
-  nativeCurrency: { name: 'SOM', symbol: 'SOM', decimals: 18 },
-  rpcUrls: {
-    default: {
-      http: ['https://rpc.somnia.network'],
-    },
-  },
-  blockExplorers: {
-    default: {
-      name: 'Somnia Explorer',
-      url: 'https://explorer.somnia.network/',
-      apiUrl: 'https://explorer.somnia.network/api',
-    },
-  },
-  contracts: {
-    multicall3: {
-      address: '0xcA11bde05977b3631167028862bE2a173976CA11',
-      blockCreated: 0,
-    },
-  },
-  testnet: false,
-})
+// SDS Contract Address on Somnia Testnet
+export const SDS_CONTRACT_ADDRESS = '0x6AB397FF662e42312c003175DCD76EfF69D048Fc' as const
