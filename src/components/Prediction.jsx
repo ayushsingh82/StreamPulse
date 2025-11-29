@@ -44,7 +44,8 @@ const Prediction = () => {
 
   const eventPreview = {
     eventType: 'Custom_Event',
-    description: 'Represents a prediction market event or forecast',
+    vision: 'Publish and register prediction market-related data schemas on Somnia Data Streams. Verify prediction streams and monitor all market activity through the dashboard.',
+    description: 'This platform enables users to publish and register custom data schemas specifically designed for prediction market use cases. Users can define schemas for market forecasts, outcome predictions, betting results, market settlements, and other prediction-related events. Once registered, these schemas create structured data streams on Somnia Data Streams that can be verified for authenticity and integrity. The dashboard provides comprehensive monitoring capabilities, allowing users to check all published prediction streams, verify their on-chain status, track publisher addresses, and view real-time prediction market activity. This creates a transparent, auditable system where prediction market data is structured, verifiable, and accessible through a unified interface, enabling developers to build trustworthy prediction platforms with verified on-chain market data.',
     data: {
       action: 'Prediction_Made',
       timestamp: new Date().toISOString(),
@@ -94,8 +95,13 @@ const Prediction = () => {
               </div>
               
               <div>
-                <p className="text-sm text-gray-400 mb-1">What This Represents</p>
-                <p className="text-gray-300">{eventPreview.description}</p>
+                <p className="text-sm text-gray-400 mb-1">Vision</p>
+                <p className="text-gray-200 font-medium">{eventPreview.vision}</p>
+              </div>
+              
+              <div>
+                <p className="text-sm text-gray-400 mb-1">Description</p>
+                <p className="text-sm text-gray-300 leading-relaxed">{eventPreview.description}</p>
               </div>
               
               <div>

@@ -44,7 +44,8 @@ const Games = () => {
 
   const eventPreview = {
     eventType: 'Game_Event',
-    description: 'Represents an in-game action or event',
+    vision: 'Publish and register game-related data schemas on Somnia Data Streams. Verify gaming streams and monitor all game events through the dashboard.',
+    description: 'This platform enables users to publish and register custom data schemas specifically designed for gaming use cases. Users can define schemas for player actions, achievements, score updates, leaderboard entries, and other in-game events. Once registered, these schemas create structured data streams on Somnia Data Streams that can be verified for authenticity and integrity. The dashboard provides comprehensive monitoring capabilities, allowing users to check all published game streams, verify their on-chain status, track publisher addresses, and view real-time gaming activity. This creates a transparent, auditable system where game data is structured, verifiable, and accessible through a unified interface, enabling developers to build decentralized gaming applications with verified on-chain game state.',
     data: {
       action: 'Game_Action',
       timestamp: new Date().toISOString(),
@@ -94,8 +95,13 @@ const Games = () => {
               </div>
               
               <div>
-                <p className="text-sm text-gray-400 mb-1">What This Represents</p>
-                <p className="text-gray-300">{eventPreview.description}</p>
+                <p className="text-sm text-gray-400 mb-1">Vision</p>
+                <p className="text-gray-200 font-medium">{eventPreview.vision}</p>
+              </div>
+              
+              <div>
+                <p className="text-sm text-gray-400 mb-1">Description</p>
+                <p className="text-sm text-gray-300 leading-relaxed">{eventPreview.description}</p>
               </div>
               
               <div>

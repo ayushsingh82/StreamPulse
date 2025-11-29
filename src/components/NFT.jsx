@@ -44,7 +44,8 @@ const NFT = () => {
 
   const eventPreview = {
     eventType: 'NFT_Sale',
-    description: 'Represents an NFT marketplace interaction event',
+    vision: 'Publish and register NFT-related data schemas on Somnia Data Streams. Verify NFT marketplace streams and monitor all NFT activity through the dashboard.',
+    description: 'This platform enables users to publish and register custom data schemas specifically designed for NFT marketplace use cases. Users can define schemas for NFT sales, transfers, listings, bids, and other marketplace interactions. Once registered, these schemas create structured data streams on Somnia Data Streams that can be verified for authenticity and integrity. The dashboard provides comprehensive monitoring capabilities, allowing users to check all published NFT streams, verify their on-chain status, track publisher addresses, and view real-time NFT marketplace activity. This creates a transparent, auditable system where NFT marketplace data is structured, verifiable, and accessible through a unified interface.',
     data: {
       action: 'NFT_Interaction',
       timestamp: new Date().toISOString(),
@@ -94,8 +95,13 @@ const NFT = () => {
               </div>
               
               <div>
-                <p className="text-sm text-gray-400 mb-1">What This Represents</p>
-                <p className="text-gray-300">{eventPreview.description}</p>
+                <p className="text-sm text-gray-400 mb-1">Vision</p>
+                <p className="text-gray-200 font-medium">{eventPreview.vision}</p>
+              </div>
+              
+              <div>
+                <p className="text-sm text-gray-400 mb-1">Description</p>
+                <p className="text-sm text-gray-300 leading-relaxed">{eventPreview.description}</p>
               </div>
               
               <div>
