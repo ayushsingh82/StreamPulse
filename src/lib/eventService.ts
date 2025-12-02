@@ -2,6 +2,7 @@ import { type Address, type Hex } from 'viem'
 import { SDK, zeroBytes32 } from '@somnia-chain/streams'
 import { getSDK, getEventSchemaEncoder, getEventSchemaId, generateEventId } from './sdsClient'
 import { eventSchema } from './schema'
+import { saveEventToStorage, getStoredEventsForPublisher } from './storageService'
 
 export interface EventData {
   timestamp: bigint
@@ -77,7 +78,7 @@ export async function publishEvent(
     // Ensure txHash is a string (Hex type from viem is already a string, but be safe)
     const txHashStr = typeof txHash === 'string' ? txHash : String(txHash)
     
-    return {
+    const publishedEvent: PublishedEvent = {
       id,
       schemaId,
       timestamp,
@@ -86,6 +87,11 @@ export async function publishEvent(
       eventData,
       txHash: txHashStr as Hex,
     }
+    
+    // Save to local storage for immediate UI updates
+    saveEventToStorage(publishedEvent)
+    
+    return publishedEvent
   } catch (error) {
     console.error('Error publishing event:', error)
     return null
@@ -93,79 +99,93 @@ export async function publishEvent(
 }
 
 // Read all events from a publisher (Somnia Testnet only)
+// Also includes events from local storage for immediate updates
 export async function getAllEvents(publisher: Address): Promise<PublishedEvent[]> {
+  // First, get events from local storage for immediate display
+  const storedEvents = getStoredEventsForPublisher(publisher)
+  
   try {
     const sdk = await getSDK(false) // Don't require wallet for reading
     const schemaId = await getEventSchemaId()
     
     if (!schemaId) {
-      console.warn('Schema ID not available')
-      return []
+      console.warn('Schema ID not available, returning stored events only')
+      return storedEvents
     }
     
     console.log('Fetching events for publisher:', publisher, 'on testnet with schema:', schemaId)
     const data = await sdk.streams.getAllPublisherDataForSchema(schemaId, publisher)
     console.log('Raw data from SDK:', data)
     
-    if (!data || !Array.isArray(data)) {
-      return []
-    }
-    
     const encoder = getEventSchemaEncoder()
-    const events: PublishedEvent[] = []
+    const onChainEvents: PublishedEvent[] = []
     
-    // The SDK automatically decodes data for registered schemas
-    // Data structure: Array of arrays, where each inner array contains decoded fields
-    for (const item of data) {
-      try {
-        // Handle decoded data structure from SDK
-        if (Array.isArray(item) && item.length >= 4) {
-          // Extract values from decoded structure
-          const getValue = (field: any) => {
-            if (typeof field === 'object' && field !== null) {
-              return field.value?.value ?? field.value ?? field
+    if (data && Array.isArray(data)) {
+      // The SDK automatically decodes data for registered schemas
+      // Data structure: Array of arrays, where each inner array contains decoded fields
+      for (const item of data) {
+        try {
+          // Handle decoded data structure from SDK
+          if (Array.isArray(item) && item.length >= 4) {
+            // Extract values from decoded structure
+            const getValue = (field: any) => {
+              if (typeof field === 'object' && field !== null) {
+                return field.value?.value ?? field.value ?? field
+              }
+              return field
             }
-            return field
-          }
-          
-          const timestamp = BigInt(getValue(item[0]) || 0)
-          const eventPublisher = getValue(item[1]) || publisher
-          const eventType = String(getValue(item[2]) || '')
-          const eventDataStr = String(getValue(item[3]) || '')
-          
-          events.push({
-            id: generateEventId(eventPublisher, timestamp),
-            schemaId,
-            timestamp,
-            publisher: eventPublisher as Address,
-            eventType,
-            eventData: eventDataStr,
-          })
-        } else if (typeof item === 'string' && item.startsWith('0x')) {
-          // If we get raw hex, decode it manually
-          const decoded = encoder.decode(item as Hex)
-          if (decoded && decoded.length >= 4) {
-            const timestamp = BigInt(decoded[0]?.value || 0)
-            events.push({
-              id: generateEventId(publisher, timestamp),
+            
+            const timestamp = BigInt(getValue(item[0]) || 0)
+            const eventPublisher = getValue(item[1]) || publisher
+            const eventType = String(getValue(item[2]) || '')
+            const eventDataStr = String(getValue(item[3]) || '')
+            
+            onChainEvents.push({
+              id: generateEventId(eventPublisher, timestamp),
               schemaId,
               timestamp,
-              publisher: decoded[1]?.value || publisher,
-              eventType: String(decoded[2]?.value || ''),
-              eventData: String(decoded[3]?.value || ''),
+              publisher: eventPublisher as Address,
+              eventType,
+              eventData: eventDataStr,
             })
+          } else if (typeof item === 'string' && item.startsWith('0x')) {
+            // If we get raw hex, decode it manually
+            const decoded = encoder.decode(item as Hex)
+            if (decoded && decoded.length >= 4) {
+              const timestamp = BigInt(decoded[0]?.value || 0)
+              onChainEvents.push({
+                id: generateEventId(publisher, timestamp),
+                schemaId,
+                timestamp,
+                publisher: decoded[1]?.value || publisher,
+                eventType: String(decoded[2]?.value || ''),
+                eventData: String(decoded[3]?.value || ''),
+              })
+            }
           }
+        } catch (err) {
+          console.error('Error decoding event:', err, item)
         }
-      } catch (err) {
-        console.error('Error decoding event:', err, item)
+      }
+    }
+    
+    // Merge stored and on-chain events, removing duplicates
+    const allEvents = [...storedEvents]
+    for (const onChainEvent of onChainEvents) {
+      const exists = allEvents.some(
+        e => e.id === onChainEvent.id || e.txHash === onChainEvent.txHash
+      )
+      if (!exists) {
+        allEvents.push(onChainEvent)
       }
     }
     
     // Sort by timestamp (newest first)
-    return events.sort((a, b) => Number(b.timestamp - a.timestamp))
+    return allEvents.sort((a, b) => Number(b.timestamp - a.timestamp))
   } catch (error) {
-    console.error('Error reading events:', error)
-    return []
+    console.error('Error reading events from chain, returning stored events:', error)
+    // Return stored events as fallback
+    return storedEvents
   }
 }
 

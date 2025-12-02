@@ -19,14 +19,6 @@ export default defineConfig({
     },
     extensions: ['.mjs', '.js', '.mts', '.ts', '.jsx', '.tsx', '.json'],
   },
-  optimizeDeps: {
-    include: ['buffer'],
-    esbuildOptions: {
-      define: {
-        global: 'globalThis',
-      },
-    },
-  },
   build: {
     sourcemap: false, // Disable sourcemaps to avoid sourcemap errors
     rollupOptions: {
@@ -42,12 +34,24 @@ export default defineConfig({
         }
         warn(warning)
       },
+      external: (id) => {
+        // Don't externalize these - they need to be bundled
+        return false
+      },
     },
     // Increase chunk size limit to avoid warnings
     chunkSizeWarningLimit: 1000,
     // Common chunk splitting
     commonjsOptions: {
       transformMixedEsModules: true,
+    },
+  },
+  optimizeDeps: {
+    include: ['buffer', 'viem', '@wagmi/core'],
+    esbuildOptions: {
+      define: {
+        global: 'globalThis',
+      },
     },
   },
 })

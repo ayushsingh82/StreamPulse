@@ -35,6 +35,8 @@ const PublishEvent = ({ onEventPublished }) => {
         const shortHash = txHashStr.length > 10 ? `${txHashStr.slice(0, 10)}...` : txHashStr;
         setSuccess(`Event published! TX: ${shortHash}`);
         setEventData('');
+        // Trigger custom storage event for same-tab updates
+        window.dispatchEvent(new Event('customStorageUpdate'));
         
         // Notify parent component
         if (onEventPublished) {

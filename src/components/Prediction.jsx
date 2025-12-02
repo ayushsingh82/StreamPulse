@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useAccount } from 'wagmi';
 import { publishEvent } from '../lib/eventService';
+import { getStoredEventCount } from '../lib/storageService';
 
 const Prediction = () => {
   const { address, isConnected } = useAccount();
@@ -32,6 +33,8 @@ const Prediction = () => {
         const txHashStr = typeof result.txHash === 'string' ? result.txHash : String(result.txHash);
         const shortHash = txHashStr.length > 10 ? `${txHashStr.slice(0, 10)}...` : txHashStr;
         setSuccess(`Prediction event published! TX: ${shortHash}`);
+        // Trigger custom storage event for same-tab updates
+        window.dispatchEvent(new Event('customStorageUpdate'));
         setTimeout(() => setSuccess(''), 5000);
       } else {
         setError('Failed to publish prediction event. Please try again.');

@@ -53,24 +53,6 @@ Stream Pulse demonstrates the power of Somnia Data Streams by providing a unifie
 - **Wallet**: Wagmi, RainbowKit, MetaMask
 - **Chain Library**: Viem
 
-### Project Structure
-
-```
-Ether-Voice/
-├── client/
-│   ├── src/
-│   │   ├── components/
-│   │   │   ├── Home.jsx          # Landing page
-│   │   │   ├── Navbar.jsx        # Navigation bar
-│   │   │   ├── Sidebar.jsx       # Sidebar navigation
-│   │   │   ├── config.ts         # Somnia Testnet chain config
-│   │   │   └── ui/               # UI components
-│   │   ├── App.jsx               # Main app component
-│   │   └── main.jsx              # App entry point
-│   └── package.json
-└── Readme.md
-```
-
 ---
 
 ## 🔄 Project Flow

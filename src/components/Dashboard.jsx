@@ -4,6 +4,7 @@ import PublishEvent from './PublishEvent';
 import EventFeed from './EventFeed';
 import { useAccount } from 'wagmi';
 import { getAllEvents } from '../lib/eventService';
+import { getStoredEventCount, getStoredEventsForPublisher } from '../lib/storageService';
 
 const Dashboard = () => {
   const { address } = useAccount();
@@ -13,33 +14,58 @@ const Dashboard = () => {
   const handleEventPublished = (event) => {
     // Event published, refresh event count and feed
     console.log('Event published:', event);
+    // Immediately update count from local storage
     if (address) {
-      loadEventCount();
+      const storedCount = getStoredEventsForPublisher(address).length;
+      setTotalEvents(storedCount);
+      loadEventCount(); // Also try to load from chain
       // Trigger EventFeed refresh
       setRefreshKey(prev => prev + 1);
+    } else {
+      // Update global count
+      setTotalEvents(getStoredEventCount());
     }
   };
 
   const loadEventCount = async () => {
     if (!address) {
-      setTotalEvents(0);
+      // Show global count if no address
+      setTotalEvents(getStoredEventCount());
       return;
     }
     
     try {
-      // Get events from Somnia Testnet
+      // Get events from both local storage and Somnia Testnet
       const events = await getAllEvents(address);
       setTotalEvents(events.length);
     } catch (error) {
       console.error('Error loading event count:', error);
+      // Fallback to local storage
+      const storedCount = getStoredEventsForPublisher(address).length;
+      setTotalEvents(storedCount);
     }
   };
 
   useEffect(() => {
     loadEventCount();
+    
+    // Listen for storage changes (when events are published)
+    const handleStorageChange = () => {
+      loadEventCount();
+    };
+    
+    window.addEventListener('storage', handleStorageChange);
+    // Also listen for custom storage events (same-tab updates)
+    window.addEventListener('customStorageUpdate', handleStorageChange);
+    
     // Refresh count every 5 seconds
     const interval = setInterval(loadEventCount, 5000);
-    return () => clearInterval(interval);
+    
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      window.removeEventListener('customStorageUpdate', handleStorageChange);
+      clearInterval(interval);
+    };
   }, [address]);
 
   return (

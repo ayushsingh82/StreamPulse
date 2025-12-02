@@ -1,11 +1,14 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { TracingBeam } from './ui/tracing-beam';
 import { TypewriterEffect } from './ui/typewriter-effect';
 import Footer from './Footer';
+import { getStoredEventCount } from '../lib/storageService';
 
 const Home = () => {
+  const [eventCount, setEventCount] = useState(0);
+  
   const words = [
     {
       text: "Stream",
@@ -16,6 +19,31 @@ const Home = () => {
       className: "text-2xl md:text-4xl text-[#CDA3E0] font-bold"
     }
   ];
+
+  useEffect(() => {
+    // Load event count from local storage
+    setEventCount(getStoredEventCount());
+    
+    // Listen for storage changes (when events are published)
+    const handleStorageChange = () => {
+      setEventCount(getStoredEventCount());
+    };
+    
+    window.addEventListener('storage', handleStorageChange);
+    // Also listen for custom storage events (same-tab updates)
+    window.addEventListener('customStorageUpdate', handleStorageChange);
+    
+    // Also check periodically for updates
+    const interval = setInterval(() => {
+      setEventCount(getStoredEventCount());
+    }, 2000);
+    
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      window.removeEventListener('customStorageUpdate', handleStorageChange);
+      clearInterval(interval);
+    };
+  }, []);
 
   return (
     <TracingBeam className="px-6">
@@ -296,7 +324,7 @@ const Home = () => {
               viewport={{ once: true }}
               className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-20 mb-20"
             >
-              {stats.map((stat, index) => (
+              {getStats(eventCount).map((stat, index) => (
                 <motion.div
                   key={stat.label}
                   initial={{ opacity: 0, scale: 0.9 }}
@@ -377,8 +405,9 @@ const featureCards = [
   }
 ];
 
-const stats = [
-  { value: "Nov 4-15", label: "Hackathon Dates" },
+// Stats will be dynamic based on eventCount
+const getStats = (eventCount) => [
+  { value: eventCount.toString(), label: "Events Published" },
   { value: "Global", label: "Online Event" },
   { value: "2025", label: "Year" }
 ];
