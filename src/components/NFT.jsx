@@ -28,8 +28,10 @@ const NFT = () => {
 
       const result = await publishEvent(address, 'NFT_Sale', eventData);
 
-      if (result) {
-        setSuccess(`NFT event published! TX: ${result.txHash?.slice(0, 10)}...`);
+      if (result && result.txHash) {
+        const txHashStr = typeof result.txHash === 'string' ? result.txHash : String(result.txHash);
+        const shortHash = txHashStr.length > 10 ? `${txHashStr.slice(0, 10)}...` : txHashStr;
+        setSuccess(`NFT event published! TX: ${shortHash}`);
         setTimeout(() => setSuccess(''), 5000);
       } else {
         setError('Failed to publish NFT event. Please try again.');

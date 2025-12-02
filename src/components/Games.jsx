@@ -28,8 +28,10 @@ const Games = () => {
 
       const result = await publishEvent(address, 'Game_Event', eventData);
 
-      if (result) {
-        setSuccess(`Game event published! TX: ${result.txHash?.slice(0, 10)}...`);
+      if (result && result.txHash) {
+        const txHashStr = typeof result.txHash === 'string' ? result.txHash : String(result.txHash);
+        const shortHash = txHashStr.length > 10 ? `${txHashStr.slice(0, 10)}...` : txHashStr;
+        setSuccess(`Game event published! TX: ${shortHash}`);
         setTimeout(() => setSuccess(''), 5000);
       } else {
         setError('Failed to publish game event. Please try again.');

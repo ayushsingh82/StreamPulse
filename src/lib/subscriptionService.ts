@@ -11,7 +11,7 @@ export async function subscribeToEvents(
   callbacks: SubscriptionCallbacks
 ): Promise<(() => void) | null> {
   try {
-    const sdk = getSDK()
+    const sdk = await getSDK(false) // Don't require wallet for subscriptions (read-only)
     const schemaId = await getEventSchemaId()
     
     if (!schemaId) {

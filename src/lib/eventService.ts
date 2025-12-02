@@ -23,7 +23,7 @@ export async function publishEvent(
   eventData: string
 ): Promise<PublishedEvent | null> {
   try {
-    const sdk = getSDK()
+    const sdk = await getSDK(true) // Require wallet for publishing
     const encoder = getEventSchemaEncoder()
     
     // Compute schema ID
@@ -74,6 +74,9 @@ export async function publishEvent(
       throw new Error('Failed to publish event')
     }
     
+    // Ensure txHash is a string (Hex type from viem is already a string, but be safe)
+    const txHashStr = typeof txHash === 'string' ? txHash : String(txHash)
+    
     return {
       id,
       schemaId,
@@ -81,7 +84,7 @@ export async function publishEvent(
       publisher,
       eventType,
       eventData,
-      txHash,
+      txHash: txHashStr as Hex,
     }
   } catch (error) {
     console.error('Error publishing event:', error)
@@ -92,7 +95,7 @@ export async function publishEvent(
 // Read all events from a publisher (Somnia Testnet only)
 export async function getAllEvents(publisher: Address): Promise<PublishedEvent[]> {
   try {
-    const sdk = getSDK()
+    const sdk = await getSDK(false) // Don't require wallet for reading
     const schemaId = await getEventSchemaId()
     
     if (!schemaId) {
@@ -169,7 +172,7 @@ export async function getAllEvents(publisher: Address): Promise<PublishedEvent[]
 // Get latest event from a publisher (Somnia Testnet only)
 export async function getLatestEvent(publisher: Address): Promise<PublishedEvent | null> {
   try {
-    const sdk = getSDK()
+    const sdk = await getSDK(false) // Don't require wallet for reading
     const schemaId = await getEventSchemaId()
     
     if (!schemaId) {

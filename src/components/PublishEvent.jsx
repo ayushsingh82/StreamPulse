@@ -30,8 +30,10 @@ const PublishEvent = ({ onEventPublished }) => {
     try {
       const result = await publishEvent(address, eventType, eventData);
       
-      if (result) {
-        setSuccess(`Event published! TX: ${result.txHash?.slice(0, 10)}...`);
+      if (result && result.txHash) {
+        const txHashStr = typeof result.txHash === 'string' ? result.txHash : String(result.txHash);
+        const shortHash = txHashStr.length > 10 ? `${txHashStr.slice(0, 10)}...` : txHashStr;
+        setSuccess(`Event published! TX: ${shortHash}`);
         setEventData('');
         
         // Notify parent component

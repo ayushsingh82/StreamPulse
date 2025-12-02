@@ -1,5 +1,5 @@
 import { SDK, SchemaEncoder } from '@somnia-chain/streams'
-import { createPublicClient, createWalletClient, http, custom, keccak256, toHex, type Address, type Hex } from 'viem'
+import { createPublicClient, createWalletClient, http, custom, keccak256, stringToBytes, type Address, type Hex } from 'viem'
 import { somniaTestnet } from '../components/config'
 import { eventSchema } from './schema'
 
@@ -14,22 +14,41 @@ export function getPublicClient() {
 }
 
 // Get wallet client for writing data (requires MetaMask, Somnia Testnet only)
-export function getWalletClient() {
+export async function getWalletClient() {
   if (typeof window === 'undefined' || !(window as any).ethereum) return null
   
-  return createWalletClient({
+  const client = createWalletClient({
     chain: somniaTestnet,
     transport: custom((window as any).ethereum),
   })
+  
+  // Get accounts to ensure wallet is connected
+  try {
+    const accounts = await client.getAddresses()
+    if (!accounts || accounts.length === 0) {
+      return null // Return null if no accounts, let caller handle it
+    }
+  } catch (error) {
+    console.warn('Could not get wallet accounts:', error)
+    return null
+  }
+  
+  return client
 }
 
 // Initialize SDK instance (Somnia Testnet only)
-export function getSDK() {
+// Requires wallet for write operations, optional for read operations
+export async function getSDK(requireWallet: boolean = true) {
   const publicClient = getPublicClient()
-  const walletClient = getWalletClient()
   
   if (!publicClient) {
     throw new Error('Public client not available')
+  }
+  
+  const walletClient = await getWalletClient()
+  
+  if (requireWallet && !walletClient) {
+    throw new Error('Wallet client not available. Please connect your wallet.')
   }
   
   return new SDK({
@@ -46,7 +65,7 @@ export function getEventSchemaEncoder() {
 // Compute schema ID (Somnia Testnet only)
 export async function getEventSchemaId(): Promise<Hex | null> {
   try {
-    const sdk = getSDK()
+    const sdk = await getSDK(false) // Don't require wallet for computing schema ID
     const result = await sdk.streams.computeSchemaId(eventSchema)
     if (result instanceof Error) {
       console.error('Error computing schema ID:', result)
@@ -61,6 +80,7 @@ export async function getEventSchemaId(): Promise<Hex | null> {
 
 // Generate unique data ID
 export function generateEventId(publisher: Address, timestamp: bigint): Hex {
-  return keccak256(toHex(`${publisher}-${timestamp}`, { size: 32 }))
+  const data = stringToBytes(`${publisher}-${timestamp.toString()}`)
+  return keccak256(data)
 }
 
